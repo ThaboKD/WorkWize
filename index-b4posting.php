@@ -380,14 +380,26 @@
 											</ul>
 										</div><!--post-st end-->
 									</div><!--post-topbar end-->
+									
 									<div class="posts-section">
+									<?php
+										$get_posts=mysql_query("SELECT *FROM post LEFT JOIN members ON members.mem_id=post.user_id ORDER BY post_id DESC LIMIT 1");
+										while ($prow=mysql_fetch_array($get_posts)) {
+											$pfname=$prow['fulname'];
+											$pfpp=$prow['pp'];
+											$ppid=$prow['post_id'];
+											$ppcont=$prow['content'];
+											$ppimg=$prow['post_image'];
+											$pptime=$prow['created'];
+										
+									?>	
 										<div class="post-bar">
 											<div class="post_topbar">
 												<div class="usy-dt">
-													<img src="http://via.placeholder.com/50x50" alt="">
+													<img src="<?php echo file_exists($pfpp) ? $pfpp : $path2; ?>" alt="">
 													<div class="usy-name">
-														<h3>John Doe</h3>
-														<span><img src="images/clock.png" alt="">3 min ago</span>
+														<h3><?php echo $pfname ?></h3>
+														<span><img src="images/clock.png" alt=""><?php echo time_stamp($pptime); ?></span>
 													</div>
 												</div>
 												<div class="ed-opts">
@@ -401,30 +413,8 @@
 													</ul>
 												</div>
 											</div>
-											<div class="epi-sec">
-												<ul class="descp">
-													<li><img src="images/icon8.png" alt=""><span>Epic Coder</span></li>
-													<li><img src="images/icon9.png" alt=""><span>India</span></li>
-												</ul>
-												<ul class="bk-links">
-													<li><a href="#" title=""><i class="la la-bookmark"></i></a></li>
-													<li><a href="#" title=""><i class="la la-envelope"></i></a></li>
-												</ul>
-											</div>
 											<div class="job_descp">
-												<h3>Senior Wordpress Developer</h3>
-												<ul class="job-dt">
-													<li><a href="#" title="">Full Time</a></li>
-													<li><span>$30 / hr</span></li>
-												</ul>
-												<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aliquam luctus hendrerit metus, ut ullamcorper quam finibus at. Etiam id magna sit amet... <a href="#" title="">view more</a></p>
-												<ul class="skill-tags">
-													<li><a href="#" title="">HTML</a></li>
-													<li><a href="#" title="">PHP</a></li>
-													<li><a href="#" title="">CSS</a></li>
-													<li><a href="#" title="">Javascript</a></li>
-													<li><a href="#" title="">Wordpress</a></li> 	
-												</ul>
+												<p><?php echo $ppcont ?>... <a href="#" title="">view more</a></p>
 											</div>
 											<div class="job-status-bar">
 												<ul class="like-com">
@@ -438,6 +428,7 @@
 												<a><i class="la la-eye"></i>Views 50</a>
 											</div>
 										</div><!--post-bar end-->
+									<?php } ?>
 										<div class="top-profiles">
 											<div class="pf-hd">
 												<h3>Top Profiles</h3>
@@ -873,8 +864,9 @@
 			<div class="post-project">
 				<h3>Post a Status</h3>
 				<div class="post-project-fields">
-					<form method="POST" action="" enctype="Multpart/Form-data">
+					<form method="POST" action="crud-app.php" enctype="Multpart/Form-data">
 						<div class="row">
+							<input type="hidden" name="user" value="<?php echo $tttt ?>">
 							<div class="col-lg-12">
 								<textarea name="status" placeholder="What's On Your Mind?"></textarea>
 							</div>
