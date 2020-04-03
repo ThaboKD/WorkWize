@@ -8,10 +8,8 @@
 		}
 		return mysql_real_escape_string($str);
 	}
-							
-	if (!isset($_FILES['image']['tmp_name'])) {
-		echo " ";
-	}else{
+	
+	if (isset($_POST['upstatus'])){
 		$file=$_FILES['image']['tmp_name'];
 		$image = $_FILES["image"] ["name"];
 		$image_name= addslashes($_FILES['image']['name']);
@@ -23,17 +21,17 @@
 		$randX = substr(str_shuffle($set), 0, 11);
 		$dy = date("YmdHis");
 		$random_name = $dy."_".$randX;
-							
-		if($size > 10000000){
-			die("Format is not allowed or file size is too big!");
-		}else{
+
 			move_uploaded_file($_FILES["image"]["tmp_name"],"upload/".$random_name.".".$extension);
 			$location="upload/".$random_name.".".$extension;
 			$lo="upload/";
 			$user=clean($_POST['user']);
 			$content=clean($_POST['status']);
 			$time=time();
-			
+
+		if($size > 10000000){
+			die("Format is not allowed or file size is too big!");
+		}else{
 			if(!empty($file) && !empty($image)){
 	            $update=mysql_query(" INSERT INTO post (user_id, post_image, content, created) VALUES ('$user','$location','$content','$time') ") or die (mySQL_error());
 	            header("location: index.php");
@@ -43,5 +41,7 @@
 				header("location: index.php");
 	        }						
 		}
-	}
+		header("location: index.php");
+	}						
+	
 ?>
